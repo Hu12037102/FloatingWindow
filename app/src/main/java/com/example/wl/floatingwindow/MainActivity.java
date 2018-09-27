@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(MainActivity.this)) {
             if (mOpenPermission == null) {
-                mOpenPermission = new AlertDialog.Builder(MainActivity.this).setTitle("提示").setMessage("请前往设置中心打开浮窗权限！").setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                mOpenPermission = new AlertDialog.Builder(MainActivity.this).setTitle("提示").setMessage("请前往设置中心打开浮窗权限！")
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mOpenPermission.dismiss();
@@ -63,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(this, "授权成功！", Toast.LENGTH_SHORT).show();
                     }
                     break;
-
             }
         }
 
