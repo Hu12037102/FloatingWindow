@@ -1,4 +1,4 @@
-package com.example.wl.floatingwindow;
+package com.example.windows;
 
 import android.app.ActionBar;
 import android.app.Activity;

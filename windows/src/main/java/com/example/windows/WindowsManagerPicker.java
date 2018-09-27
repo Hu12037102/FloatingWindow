@@ -1,9 +1,8 @@
-package com.example.wl.floatingwindow;
+package com.example.windows;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.ImageFormat;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Vibrator;
