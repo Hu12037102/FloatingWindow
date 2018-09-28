@@ -31,6 +31,7 @@ public class WindowsManagerPicker {
     private static final int DOWN_MESSAGE_WHAT = 200;
 
 
+
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
