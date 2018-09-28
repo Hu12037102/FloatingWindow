@@ -16,6 +16,11 @@ import android.widget.Toast;
 
 import com.example.windows.WindowsManagerPicker;
 
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Stack;
+import java.util.Vector;
+
 public class MainActivity extends AppCompatActivity {
 
     private AlertDialog mOpenPermission;
@@ -25,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
     }
     public void openFloatingWindows(View view){
 

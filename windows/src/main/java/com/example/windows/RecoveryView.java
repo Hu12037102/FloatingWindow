@@ -74,6 +74,9 @@ public class RecoveryView extends View {
             case MeasureSpec.EXACTLY:
                 size = measureSize;
                 break;
+            case MeasureSpec.UNSPECIFIED:
+                size = defaultSize;
+                break;
             default:
                 size = defaultSize;
                 break;
@@ -95,7 +98,8 @@ public class RecoveryView extends View {
          // super.onDraw(canvas);
 
         canvas.drawArc(mArcRectF, 180, 90, true, mArcPaint);
-        canvas.drawText(RecoveryView.DRAW_TEXT, getMeasuredWidth() / 2 - mTextPaint.measureText(RecoveryView.DRAW_TEXT) - DispalyUtils.viewSize(getContext(),TEXT_MARGIN), getMeasuredHeight() / 2 - TEXT_MARGIN, mTextPaint);
+        canvas.drawText(RecoveryView.DRAW_TEXT, getMeasuredWidth() / 2 - mTextPaint.measureText(RecoveryView.DRAW_TEXT)
+                - DispalyUtils.viewSize(getContext(),TEXT_MARGIN), getMeasuredHeight() / 2 - TEXT_MARGIN, mTextPaint);
         mTextPaint.getTextBounds(RecoveryView.DRAW_TEXT, 0, RecoveryView.DRAW_TEXT.length() - 1, mTextRect);
         canvas.drawBitmap(mBitmap, getMeasuredWidth() / 2 - mTextPaint.measureText(RecoveryView.DRAW_TEXT) - DispalyUtils.viewSize(getContext(),TEXT_MARGIN),
                 getMeasuredHeight() / 2-mTextRect.height()-mBitmap.getHeight()-DispalyUtils.viewSize(getContext(),100), mArcPaint);
