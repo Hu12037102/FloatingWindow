@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -25,7 +27,29 @@ public class WindowsManagerPicker {
     private static final int RECOVERY_X = 750;
     private boolean canVibratio = true;
     private Activity mActivity;
+    private static final int UP_MESSAGE_WHAT = 100;
+    private static final int DOWN_MESSAGE_WHAT = 200;
 
+
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case WindowsManagerPicker.UP_MESSAGE_WHAT:
+                    if (DispalyUtils.isShowDeviceHasNavigationBar(mContext)) {
+                        DispalyUtils.showTransparentNavigation(mActivity);
+                    }
+                    break;
+                case WindowsManagerPicker.DOWN_MESSAGE_WHAT:
+                    if (DispalyUtils.isShowDeviceHasNavigationBar(mContext)) {
+                        DispalyUtils.hideTransparentNavigation(mActivity);
+                    }
+                    break;
+            }
+
+            return true;
+        }
+    });
 
     public static void init(@NonNull Context context) {
         mContext = context;
@@ -86,12 +110,10 @@ public class WindowsManagerPicker {
                         case MotionEvent.ACTION_DOWN:
                             x = (int) event.getRawX();
                             y = (int) event.getRawY();
-
+                            mHandler.sendEmptyMessage(WindowsManagerPicker.DOWN_MESSAGE_WHAT);
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            if (DispalyUtils.isShowDeviceHasNavigationBar(mContext)){
-                                DispalyUtils.hideTransparentNavigation(mActivity);
-                            }
+
                             Log.w("DispalyUtils--", DispalyUtils.isShowDeviceHasNavigationBar(mContext) + "--"
                                     + DispalyUtils.getNavigationHeight(mContext));
                             createRecoverWindows(true);
@@ -128,7 +150,6 @@ public class WindowsManagerPicker {
 
                             break;
                         case MotionEvent.ACTION_UP:
-
                             int nowUpX = (int) event.getRawX();
                             int nowUpY = (int) event.getRawY();
                             if (nowUpY >= RECOVERY_Y && nowUpX >= RECOVERY_X) {
@@ -136,11 +157,8 @@ public class WindowsManagerPicker {
                                 removeRecoveryView();
                             } else {
                                 createRecoverWindows(false);
-                                //removeRecoveryView();
                             }
-                            if (DispalyUtils.isShowDeviceHasNavigationBar(mContext)){
-                                DispalyUtils.showTransparentNavigation(mActivity);
-                            }
+                            mHandler.sendEmptyMessageDelayed(WindowsManagerPicker.UP_MESSAGE_WHAT, 50);
 
                             break;
                         default:
@@ -200,7 +218,7 @@ public class WindowsManagerPicker {
     }
 
 
-    private void removeFloatingView(){
+    private void removeFloatingView() {
         final WindowManager windowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         if (windowManager == null)
             return;
@@ -209,6 +227,7 @@ public class WindowsManagerPicker {
             mFloatingImage = null;
         }
     }
+
     /**
      * 振动功能
      */
@@ -219,12 +238,15 @@ public class WindowsManagerPicker {
         }
     }
 
-    public void onDestroy(){
+    public void onDestroy() {
         removeFloatingView();
         removeRecoveryView();
+        mHandler.removeMessages(WindowsManagerPicker.DOWN_MESSAGE_WHAT);
+        mHandler.removeMessages(WindowsManagerPicker.UP_MESSAGE_WHAT);
+        mHandler.removeCallbacksAndMessages(null);
+        mHandler = null;
         mPicker = null;
     }
-
 
 
 }

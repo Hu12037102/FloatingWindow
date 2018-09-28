@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -16,6 +17,8 @@ import android.view.ViewConfiguration;
 import android.view.WindowManager;
 
 public class DispalyUtils {
+    private static final int DEFAULT_DISPLAY_SIZE = 1080;
+
     /**
      * 判断导航栏是否显示
      *
@@ -62,7 +65,7 @@ public class DispalyUtils {
             View decorView = activity.getWindow().getDecorView();
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    |View.SYSTEM_UI_FLAG_IMMERSIVE
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         }
@@ -74,9 +77,29 @@ public class DispalyUtils {
             View decorView = activity.getWindow().getDecorView();
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-
         }
 
+    }
+
+    public static int viewSize(@NonNull Context context, int viewSize) {
+        if (viewSize <= 0) {
+            throw new NullPointerException("view size must than zero!");
+        }
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if (windowManager != null) {
+            DisplayMetrics dm = new DisplayMetrics();
+            windowManager.getDefaultDisplay().getMetrics(dm);
+            return dm.widthPixels / DEFAULT_DISPLAY_SIZE * viewSize;
+        }
+        return 0;
+    }
+
+    public static int statusHeight(@NonNull Context context) {
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            return context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return 0;
     }
 
 }

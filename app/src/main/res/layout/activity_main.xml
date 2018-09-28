@@ -13,7 +13,13 @@
         android:layout_height="wrap_content"
         android:onClick="openFloatingWindows"
         android:text="打开悬浮窗" />
-
+    <com.example.windows.RecoveryView
+        android:id="@+id/rv_remove"
+        android:layout_width="800px"
+        android:layout_height="800px"
+        android:layout_below="@id/top_btn"
+        android:background="@android:color/transparent"
+        />
 
 
 </RelativeLayout>
